@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Variables
+s3_bucket="upgrad-hashmeet"
+your_name="Hashmeet"
+
 # Step 1: Update package details and package list
 sudo apt update -y
 
@@ -21,16 +25,16 @@ fi
 # Step 5: Create a tar archive of apache2 logs
 timestamp=$(date '+%d%m%Y-%H%M%S')
 log_files="/var/log/apache2/*.log"
-tar_file="Hashmeet-httpd-logs-$timestamp.tar"
+tar_file="$your_name-httpd-logs-$timestamp.tar"
 tmp_dir="/tmp"
 
 # Create the tar archive
 tar -cvf "$tmp_dir/$tar_file" $log_files
 
-# Step 6: Copy the archive to an S3 bucket using AWS CLI
-aws s3 cp "$tmp_dir/$tar_file" s3://upgrad-hashmeet/
+# Step 6: Copy the archive to the S3 bucket using AWS CLI
+aws s3 cp "$tmp_dir/$tar_file" "s3://$s3_bucket/"
 
-# Optional: Clean up the temporary tar file
+# Clean up the temporary tar file
 rm "$tmp_dir/$tar_file"
 
 echo "Script completed successfully."
